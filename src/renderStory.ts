@@ -2,7 +2,11 @@ import {IItem} from "hacker-news-api-types";
 import {h} from "./hokeyscript";
 
 export function renderStory(story: IItem): Element {
-    const hasComments = story.kids && story.kids.length > 0;
+    const commentsLength = story.kids && story.kids.length ? story.kids.length : 'No';
+
+    console.log(new Date(story.time));
+    const postedTime = new Date(story.time * 1000);
+
     return h(
         'li',
         {
@@ -29,11 +33,19 @@ export function renderStory(story: IItem): Element {
             )
         ),
         h(
+            'time',
+            {
+                class: 'story__date',
+                datetime: postedTime.toISOString()
+            },
+            `${postedTime.toLocaleDateString()}`
+        ),
+        h(
             'span',
             {
-                class: 'story__comments'
+                class: 'story__comments',
             },
-            `${story.kids.length} comments`
+            `${commentsLength} comments`
         )
     )
 }
