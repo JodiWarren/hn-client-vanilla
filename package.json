@@ -11,10 +11,13 @@
     "ts-loader": "^6.0.4",
     "typescript": "^3.5.3",
     "webpack": "^4.39.1",
-    "webpack-cli": "^3.3.6"
+    "webpack-cli": "^3.3.6",
+    "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
     "build": "cp src/index.html dist/index.html && webpack",
+    "watch": "webpack --watch",
+    "start": "webpack-dev-server --open",
     "test": "jest"
   },
   "author": "Jodi Warren <jodi@jodiwarren.com> (https://jodiwarren.com)",
