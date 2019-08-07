@@ -6,6 +6,7 @@
   "dependencies": {},
   "devDependencies": {
     "@types/jest": "^24.0.17",
+    "hacker-news-api-types": "^1.0.1",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.4",
