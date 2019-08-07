@@ -40,7 +40,7 @@ export function story(story: IItem): Element {
             `${postedTime.toLocaleDateString()}`
         ),
         h(
-            'span',
+            'p',
             {
                 class: 'story__comments',
             },
