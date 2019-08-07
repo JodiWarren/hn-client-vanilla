@@ -16,7 +16,9 @@ describe('elements can contain children', function () {
         style: 'color: red',
         'aria-something': 'something else',
       }, "Jodi"),
-      h('li', null, "Ellie"),
+      h('li', {
+        onclick: function() { alert('hello!') }
+      }, "Ellie"),
       h('li', null,
           h('strong', null, 'Moth')
       ),

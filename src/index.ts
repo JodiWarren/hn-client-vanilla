@@ -1,30 +1,29 @@
-import {h} from "./hokeyscript";
-import {renderStory} from "./renderStory";
 import {fetchLatestStories} from './service';
 import {IItem} from "hacker-news-api-types";
+import {stories} from "./components/stories";
 
-const app = document.querySelector('#app');
-
-interface AppState {
+export interface IAppState {
     storyOffset: number;
     storiesData: Array<IItem>;
+    loading: boolean;
+    setState: (callback: (appState: IAppState) => IAppState) => void;
 }
 
-let state: AppState = {
+let appState: IAppState = {
+    setState: callback => {
+        appState = callback(appState)
+    },
+
     storyOffset: 0,
     storiesData: [],
+    loading: false,
 }
 
-let oldStories : Element | null = null;
+const app = document.querySelector('#app');
+let oldStories: Element | null = null;
 
 function render() {
-    const newStories = h(
-        'ol',
-        {
-            class: 'story-list'
-        },
-        ...state.storiesData.map(renderStory)
-    )
+    const newStories = stories(appState);
 
     if (oldStories) {
         app.replaceChild(newStories, oldStories)
@@ -35,12 +34,18 @@ function render() {
     oldStories = newStories;
 }
 
-fetchLatestStories(state.storyOffset).then(data => {
-        console.log(data);
-        state = {
-            ...state,
-            storiesData: data
-        };
-        render();
-    }
-)
+export function fetchStories() {
+    fetchLatestStories(appState.storyOffset)
+        .then(data => {
+                appState.setState(appState => {
+                    return {
+                        ...appState,
+                        storiesData: data
+                    }
+                });
+                render();
+            }
+        )
+}
+
+fetchStories()

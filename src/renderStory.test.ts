@@ -1,6 +1,6 @@
 import {IItem} from "hacker-news-api-types";
 import {h} from "./hokeyscript";
-import {renderStory} from "./renderStory";
+import {story} from "./components/story";
 
 const storiesData: Array<IItem> = [
     {
@@ -42,7 +42,7 @@ describe('should render a set of test stories', function () {
     const stories = h(
         'ol',
         null,
-        ...storiesData.map(renderStory)
+        ...storiesData.map(story)
     );
 
     it('should return the right amount of stories', function () {
@@ -52,25 +52,25 @@ describe('should render a set of test stories', function () {
     });
 
     it('should render the first story', function () {
-        expect(stories.children[0].children[0].textContent).toBe('62');
+        expect(stories.children[0].children[0].textContent).toBe('62 votes');
         expect(stories.children[0].children[0].classList.contains('story__score')).toBeTruthy()
         expect(stories.children[0].children[1].textContent).toBe('Show HN: Data Structures and Algorithms in JavaScript');
         expect(stories.children[0].children[1].children[0].attributes[0].name).toBe('href');
         expect(stories.children[0].children[1].children[0].attributes[0].value).toBe('https://github.com/amejiarosario/dsa.js-data-structures-algorithms-javascript');
-        expect(stories.children[0].children[2].textContent).toBe('5 comments');
+        expect(stories.children[0].children[3].textContent).toBe('5 comments');
     });
 
     it('should render the second story', function () {
         expect(stories.children[1].children[1].textContent).toBe('FedEx Ends Ground-Delivery Deal with Amazon');
         expect(stories.children[1].children[1].children[0].attributes[0].value).toBe('https://www.bloomberg.com/news/articles/2019-08-07/fedex-deepens-pullback-from-amazon-as-ground-delivery-deal-ends');
-        expect(stories.children[1].children[2].textContent).toBe('9 comments');
+        expect(stories.children[1].children[3].textContent).toBe('9 comments');
     });
 
     it('should render the third story', function () {
         expect(stories.children[2].children[1].textContent).toBe('Technical Vision for Qt 6');
         expect(stories.children[2].children[1].children[0].attributes[0].name).toBe('href');
         expect(stories.children[2].children[1].children[0].attributes[0].value).toBe('https://blog.qt.io/blog/2019/08/07/technical-vision-qt-6/');
-        expect(stories.children[2].children[2].textContent).toBe('2 comments');
+        expect(stories.children[2].children[3].textContent).toBe('2 comments');
     });
 
 });

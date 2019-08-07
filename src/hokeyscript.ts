@@ -1,9 +1,14 @@
 interface Hokeyattr {
-    [key: string]: string;
+    [key: string]: (() => void) | string;
 }
 
 interface Hokeyscript {
     (tag: string, attributes: Hokeyattr | null, ...children: Array<string | Element>): Element
+}
+
+function removeOnFromBeginningOfString(string: string) {
+    const regex = /^(?:on)([\S]+)/;
+    return regex.exec(string)[1];
 }
 
 /**
@@ -14,7 +19,14 @@ export const h: Hokeyscript = function (tag, attributes, ...children): Element {
 
     if (attributes) {
         for (let [key, value] of Object.entries(attributes)) {
-            element.setAttribute(key, value)
+            if (typeof value === 'function') {
+                // remove "on" from beginning of event
+                const eventName = removeOnFromBeginningOfString(key);
+                // Need to create a list of events to later deregister
+                element.addEventListener(eventName, value, false);
+            } else {
+                element.setAttribute(key, value)
+            }
         }
     }
 

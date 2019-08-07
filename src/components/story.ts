@@ -1,10 +1,9 @@
 import {IItem} from "hacker-news-api-types";
-import {h} from "./hokeyscript";
+import {h} from "../hokeyscript";
 
-export function renderStory(story: IItem): Element {
+export function story(story: IItem): Element {
     const commentsLength = story.kids && story.kids.length ? story.kids.length : 'No';
 
-    console.log(new Date(story.time));
     const postedTime = new Date(story.time * 1000);
 
     return h(
@@ -17,7 +16,7 @@ export function renderStory(story: IItem): Element {
             {
                 class: 'story__score'
             },
-            `${story.score}`
+            `${story.score} votes`
         ),
         h(
             'h2',
