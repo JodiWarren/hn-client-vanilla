@@ -44,9 +44,9 @@ export async function fetchStory(id: number) {
 
 export async function fetchLatestStories(offset: number) {
     const storyIds = await fetchStoryIds();
-    const firstStories = storyIds
+    const selectedStories = storyIds
         .slice(offset, offset + 20)
         .map(fetchStory)
 
-    return Promise.all(firstStories);
+    return Promise.all(selectedStories);
 }

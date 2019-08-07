@@ -4,7 +4,15 @@ import {fetchStories, IAppState} from "../index";
 import {nextPage} from "./nextPageButton";
 import {prevPage} from "./prevPageButton";
 
-export function stories(appState: IAppState) {
+function loading(appState: IAppState): Element {
+    return h(
+        'p',
+        null,
+        appState.loading ? 'Loading' : ''
+    )
+}
+
+export function stories(appState: IAppState): Element {
   return h(
     'div',
     {
@@ -12,7 +20,7 @@ export function stories(appState: IAppState) {
     },
     prevPage(appState, {fetchStories}),
     nextPage(appState, {fetchStories}),
-
+    loading(appState),
     h(
       'ol',
       {

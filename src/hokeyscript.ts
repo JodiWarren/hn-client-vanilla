@@ -31,7 +31,6 @@ export const h: Hokeyscript = function (tag, attributes, ...children): Element {
     }
 
     children.forEach(child => {
-        let thisChild;
         if (typeof child === 'string') {
             element.appendChild(document.createTextNode(child));
         } else {
