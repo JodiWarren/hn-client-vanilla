@@ -13,20 +13,21 @@ function loading(appState: IAppState): Element {
 }
 
 export function stories(appState: IAppState): Element {
-  return h(
-    'div',
-    {
-      class: 'stories',
-    },
-    prevPage(appState, {fetchStories}),
-    nextPage(appState, {fetchStories}),
-    loading(appState),
-    h(
-      'ol',
-      {
-        class: 'story-list'
-      },
-      ...appState.storiesData.map(story)
+    return h(
+        'div',
+        {
+            class: 'stories',
+            'aria-live': 'polite'
+        },
+        prevPage(appState, {fetchStories}),
+        nextPage(appState, {fetchStories}),
+        loading(appState),
+        h(
+            'ol',
+            {
+                class: 'story-list'
+            },
+            ...appState.storiesData.map(story)
+        )
     )
-  )
 }

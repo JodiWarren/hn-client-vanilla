@@ -9,46 +9,54 @@ export function story(story: IItem): Element {
     return h(
         'li',
         {
-            class: 'story'
+            class: 'stories__item'
         },
         h(
-            'div',
+            'article',
             {
-                class: 'story__score'
-            },
-            `${story.score} votes`
-        ),
-        h(
-            'h2',
-            {
-                class: 'story__title'
+                class: 'story'
             },
             h(
-                'a',
+                'div',
                 {
-                    href: story.url
+                    class: 'story__score'
                 },
-                `${story.title}`
-            )
-        ),
-        h(
-            'time',
-            {
-                class: 'story__date',
-                datetime: postedTime.toISOString()
-            },
-            `${postedTime.toLocaleDateString()}`
-        ),
-        h(
-            'p',
-            null,
+                `${story.score} votes`
+            ),
             h(
-                'a',
+                'h2',
                 {
-                    class: 'story__comments',
-                    href: `https://news.ycombinator.com/item?id=${story.id}`
+                    class: 'story__title'
                 },
-                `${commentsLength} comments`
+                h(
+                    'a',
+                    {
+                        href: story.url,
+                        title: `Read ${story.title}`
+                    },
+                    `${story.title}`
+                )
+            ),
+            h(
+                'time',
+                {
+                    class: 'story__date',
+                    datetime: postedTime.toISOString()
+                },
+                `${postedTime.toLocaleDateString()}`
+            ),
+            h(
+                'p',
+                null,
+                h(
+                    'a',
+                    {
+                        class: 'story__comments',
+                        href: `https://news.ycombinator.com/item?id=${story.id}`,
+                        title: `Read ${commentsLength} comments`
+                    },
+                    `${commentsLength} comments`
+                )
             )
         )
     )

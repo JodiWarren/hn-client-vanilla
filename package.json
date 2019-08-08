@@ -18,9 +18,10 @@
     "webpack-dev-server": "^3.7.2"
   },
   "scripts": {
-    "build": "cp src/index.html dist/index.html && webpack",
-    "watch": "webpack --watch",
-    "start": "webpack-dev-server --open",
+    "build": "npm run copy-statics && webpack",
+    "copy-statics": "rm -rf dist && mkdir dist && cp src/index.html dist/index.html",
+    "watch": "npm run copy-statics && webpack --watch",
+    "start": "npm run copy-statics && webpack-dev-server --open",
     "test": "jest"
   },
   "author": "Jodi Warren <jodi@jodiwarren.com> (https://jodiwarren.com)",
