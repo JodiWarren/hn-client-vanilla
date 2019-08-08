@@ -38,14 +38,14 @@ const storiesData: Array<IItem> = [
     }
 ];
 
-describe('should render a set of test stories', function () {
+describe('should render a set of test items', function () {
     const stories = h(
         'ol',
         null,
         ...storiesData.map(story)
     );
 
-    it('should return the right amount of stories', function () {
+    it('should return the right amount of items', function () {
         expect(stories.children.length).toBe(3);
         expect(stories.children[0].classList.contains('story')).toBeTruthy()
         expect(stories.children[0].children[0].nodeName).toBe('DIV');

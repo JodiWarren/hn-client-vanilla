@@ -1,3 +1,7 @@
 module.exports = {
-  preset: 'ts-jest'
+  preset: 'ts-jest',
+  automock: false,
+  setupFiles: [
+    "./setupJest.ts"
+  ]
 };
