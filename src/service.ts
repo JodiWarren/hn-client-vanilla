@@ -42,35 +42,6 @@ export async function fetchItem(id: number): Promise<IItem> {
     }
 }
 
-export function fetchStoryComments(id: number) {
-    const commentIds = cache.items[id].kids;
-    if (!commentIds) {
-        return;
-    }
-
-    getChildComments(...commentIds);
-}
-
-export async function getChildComments(...childIds: number[]) {
-    const mappedIds = childIds.map(id => {
-        return fetchItem(id)
-            .then(data => {
-                if (data.kids) {
-                    getChildComments(...data.kids)
-                        .then(data => data);
-                } else {
-                    return data;
-                }
-            });
-    });
-
-    Promise.all(mappedIds).then(data => {
-        console.log(JSON.stringify(data, null, 2));
-        return data;
-    });
-}
-
-
 export async function fetchLatestStories(offset: number) {
     const storyIds = await fetchStoryIds();
     const selectedStories = storyIds
