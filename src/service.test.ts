@@ -1,4 +1,4 @@
-import {buildCommentTree} from "./service";
+import {getChildComments} from "./service";
 
 describe('building a comment tree', function () {
     beforeEach(() => {
@@ -9,35 +9,32 @@ describe('building a comment tree', function () {
         fetchMock
             .once(JSON.stringify({
                 data: {
-                    "id": 20622411,
-                    "kids": [20622516, 20622503],
+                    "id": 10,
+                    "kids": [20, 30],
                     "parent": 20620545,
                 }
             }))
             .once(JSON.stringify({
                 data: {
-                    "id": 20622516,
-                    "parent": 20622411,
+                    "id": 20,
+                    "parent": 10,
                 }
             }))
             .once(JSON.stringify({
                 data: {
-                    "id": 20622503,
-                    "kids": [20622918],
-                    "parent": 20622411,
+                    "id": 30,
+                    "kids": [40],
+                    "parent": 10,
+                }
+            }))
+            .once(JSON.stringify({
+                data: {
+                    "id": 40,
+                    "parent": 30,
                 }
             }));
 
-        const startingCommentTree = {
-            id: 1,
-            children: [
-                {
-                    id: 20622411
-                }
-            ],
-        }
-
-        const commentTree = buildCommentTree(startingCommentTree);
-        console.log(commentTree);
+        const comments = getChildComments(20622411);
+        console.log(JSON.stringify(comments, null, 2));
     });
 });

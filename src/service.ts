@@ -1,5 +1,6 @@
 import {IItem} from "hacker-news-api-types";
 import {itemUrl, STORIES_URL} from './constants';
+import {buildBranch, ICommentBranch} from "./utils";
 
 interface ICache {
     storyIds: number[];
@@ -27,7 +28,7 @@ export async function fetchStoryIds() {
     }
 }
 
-export async function fetchItem(id: number) {
+export async function fetchItem(id: number): Promise<IItem> {
     if (cache.items[id]) {
         return cache.items[id];
     }
@@ -47,124 +48,28 @@ export function fetchStoryComments(id: number) {
         return;
     }
 
-    const commentTree: ICommentBranch = {
-        id,
-        children: commentIds.map(id => ({id})),
-    };
-    return buildCommentTree(commentTree);
+    getChildComments(...commentIds);
 }
 
-interface ICommentBranch {
-    id: number,
-    parent?: number,
-    children?: ICommentBranch[],
-}
-
-// const commentTree = {
-//     id: 1,
-//     children: [
-//         {
-//             id: 4,
-//             parent: 1
-//             children: [
-//                 {
-//                     id: 10,
-//                     parent: 4
-//                 },
-//                 {
-//                     id: 14,
-//                     parent: 4
-//                 }
-//             ]
-//         }
-//     ]
-// }
-
-/*
-step 1:
-{
-    id: 4
-}
-
-step 2:
-{
-    id: 4,
-    parent: 1
-    children: [
-        {
-            id: 10,
-            parent: 4
-        },
-        {
-            id: 14,
-            parent: 4
-        }
-    ]
-}
-
-step 3:
-{
-    id: 4,
-    parent: 1
-    children: [
-        {
-            id: 10,
-            parent: 4
-            children: [
-                {
-                    id: 20,
-                    parent: 10
-                },
-                {
-                    id: 21,
-                    parent: 10
+export async function getChildComments(...childIds: number[]) {
+    const mappedIds = childIds.map(id => {
+        return fetchItem(id)
+            .then(data => {
+                if (data.kids) {
+                    getChildComments(...data.kids)
+                        .then(data => data);
+                } else {
+                    return data;
                 }
-            ]
-        },
-        {
-            id: 14,
-            parent: 4
-        }
-    ]
+            });
+    });
+
+    Promise.all(mappedIds).then(data => {
+        console.log(JSON.stringify(data, null, 2));
+        return data;
+    });
 }
 
- */
-
-function buildBranch(id: number, parentId: number, ...childIds: number[]): ICommentBranch {
-    const branch: ICommentBranch = {
-        id: id,
-        parent: parentId,
-    }
-
-    if (!childIds.length) {
-        return branch
-    }
-
-    branch.children = childIds.map(childId => ({
-        id: childId,
-        parent: id
-    }))
-
-    return branch;
-}
-
-
-export async function buildCommentTree(commentBranch: ICommentBranch) {
-    if (!commentBranch.children) {
-        return commentBranch;
-    }
-    const children = commentBranch.children
-        .map(async child => {
-            const item = await fetchItem(child.id);
-            return buildBranch(child.id, commentBranch.id, ...item.kids);
-        });
-
-    Promise.all(children)
-        .then(children => {
-            console.log('children: ' + JSON.stringify(children, null, 2));
-        })
-
-}
 
 export async function fetchLatestStories(offset: number) {
     const storyIds = await fetchStoryIds();
