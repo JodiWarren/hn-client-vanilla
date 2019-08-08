@@ -41,10 +41,15 @@ export function story(story: IItem): Element {
         ),
         h(
             'p',
-            {
-                class: 'story__comments',
-            },
-            `${commentsLength} comments`
+            null,
+            h(
+                'a',
+                {
+                    class: 'story__comments',
+                    href: `https://news.ycombinator.com/item?id=${story.id}`
+                },
+                `${commentsLength} comments`
+            )
         )
     )
 }
